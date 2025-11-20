@@ -1,0 +1,454 @@
+/* =========================================
+   1. VARIABLES & RESET
+   ========================================= */
+:root {
+    --primary-color: #003366;
+    --secondary-color: #00a8e8;
+    --accent-color: #004080;
+    --text-color: #333;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --shadow-light: rgba(0,0,0,0.1);
+    --gradient-primary: linear-gradient(135deg, #003366, #00a8e8);
+    --gradient-overlay: linear-gradient(45deg, rgba(0,51,102,0.9), rgba(0,168,232,0.9));
+    --transition-fast: 0.3s ease;
+    --transition-medium: 0.5s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    overflow-x: hidden;
+    background: var(--white);
+}
+
+/* =========================================
+   2. LOADER COMPONENT
+   ========================================= */
+.loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--gradient-overlay);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s, visibility 0.5s;
+    backdrop-filter: blur(10px);
+}
+
+.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.wave-loader {
+    width: 100px; height: 50px; display: flex; align-items: flex-end; gap: 5px;
+}
+
+.wave-bar {
+    width: 20px; background: linear-gradient(to top, var(--secondary-color), var(--white));
+    animation: wave 1s ease-in-out infinite;
+    border-radius: 10px 10px 0 0;
+}
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes wave {
+    0%, 100% { height: 20px; transform: scaleY(1); }
+    50% { height: 50px; transform: scaleY(1.2); }
+}
+
+/* =========================================
+   3. NAVIGATION COMPONENT
+   ========================================= */
+nav {
+    background: var(--primary-color);
+    padding: 0.5rem 0;
+    position: fixed; width: 100%; top: 0; z-index: 1000;
+    box-shadow: 0 2px 20px var(--shadow-light);
+    transform: translateY(-100%);
+    animation: slideDown 0.5s forwards 0.5s;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+}
+
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 20px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.logo-img {
+    height: 60px; width: auto;
+    animation: fadeInLeft 1s;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.nav-menu { display: flex; list-style: none; gap: 2rem; }
+
+.nav-menu a {
+    color: var(--white); text-decoration: none;
+    transition: var(--transition-fast);
+    padding: 5px 10px; border-radius: 5px;
+    font-weight: 500; text-transform: uppercase;
+    font-size: 0.9rem; letter-spacing: 0.5px;
+}
+
+.nav-menu a:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 5px 15px rgba(0,168,232,0.3);
+}
+
+.menu-toggle { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+.menu-toggle span {
+    width: 30px; height: 3px; background: var(--white);
+    margin: 4px 0; transition: var(--transition-fast);
+}
+
+/* =========================================
+   4. HERO COMPONENT
+   ========================================= */
+.hero {
+    background: linear-gradient(rgba(0, 51, 102, 0.75), rgba(0, 51, 102, 0.75)), url('Home.jpg');
+    background-size: cover; background-position: center; background-attachment: fixed;
+    padding: 180px 0 120px;
+    text-align: center; color: var(--white);
+    position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center;
+}
+
+.ocean-waves {
+    position: absolute; bottom: 0; left: 0; width: 200%; height: 150px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="%23ffffff10" d="M0,56L48,64C96,72,192,88,288,88C384,88,480,72,576,64C672,56,768,56,864,64C960,72,1056,88,1152,88C1248,88,1344,72,1392,64L1440,56V120H1392C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>');
+    background-size: 1200px 100px;
+    animation: waves 20s linear infinite;
+    opacity: 0.5;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 1rem;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+    font-weight: 700; position: relative; z-index: 1;
+}
+
+.hero .tagline {
+    font-size: clamp(1rem, 2vw, 1.5rem); margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-weight: 300; letter-spacing: 1px; position: relative; z-index: 1;
+}
+
+.cta-button {
+    display: inline-block; padding: 15px 40px; margin-top: 30px;
+    background: var(--gradient-primary); color: var(--white);
+    text-decoration: none; border-radius: 50px;
+    font-weight: 600; text-transform: uppercase;
+    box-shadow: 0 5px 20px rgba(0,168,232,0.3);
+    position: relative; overflow: hidden;
+    transition: var(--transition-fast);
+}
+
+.cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,168,232,0.5); }
+
+/* =========================================
+   5. SECTIONS & ANIMATIONS
+   ========================================= */
+section { padding: 80px 0; position: relative; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; }
+
+h2 {
+    color: var(--primary-color); font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 3rem; text-align: center;
+    position: relative; padding-bottom: 20px;
+    font-weight: 700; text-transform: uppercase;
+}
+h2::after {
+    content: ''; position: absolute; bottom: -10px; left: 50%;
+    transform: translateX(-50%); width: 100px; height: 1px;
+    background: var(--secondary-color); opacity: 0.3;
+}
+
+.animate-on-scroll, .slide-in-left, .slide-in-right, .scale-in {
+    opacity: 0; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animate-on-scroll { transform: translateY(30px); }
+.slide-in-left { transform: translateX(-50px); }
+.slide-in-right { transform: translateX(50px); }
+.scale-in { transform: scale(0.8); }
+
+.animate-on-scroll.animated { opacity: 1; transform: translateY(0); }
+.slide-in-left.animated { opacity: 1; transform: translateX(0); }
+.slide-in-right.animated { opacity: 1; transform: translateX(0); }
+.scale-in.animated { opacity: 1; transform: scale(1); }
+
+@keyframes waves {
+    0% { background-position-x: 0; transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { background-position-x: 1200px; transform: translateY(0); }
+}
+@keyframes slideDown { to { transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+
+/* =========================================
+   6. STATS COMPONENT
+   ========================================= */
+.stats {
+    background: var(--gradient-overlay); color: var(--white); padding: 60px 0;
+}
+.stats-container {
+    display: flex; justify-content: space-around; flex-wrap: wrap; gap: 40px;
+}
+.stat-item {
+    text-align: center; padding: 20px;
+    background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+    border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+    min-width: 150px;
+}
+.stat-number { font-size: 3.5rem; font-weight: bold; color: var(--white); }
+
+/* =========================================
+   7. ABOUT COMPONENT (UPDATED)
+   ========================================= */
+.about {
+    /* 
+       CHANGED: Reduced the white overlay from 0.95 to 0.6 
+       This makes the background image much more visible.
+    */
+    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('About Us.jpg');
+    background-size: cover; 
+    background-position: center;
+    /* ADDED: Parallax effect makes the background stay still while you scroll - looks premium */
+    background-attachment: fixed; 
+    display: flex;
+    align-items: center;
+}
+
+/* =========================================
+   7. ABOUT COMPONENT (UPDATED)
+   ========================================= */
+.about {
+    /* 
+       CHANGED: Reduced the white overlay from 0.95 to 0.6 
+       This makes the background image much more visible.
+    */
+    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('About Us.jpg');
+    background-size: cover; 
+    background-position: center;
+    /* ADDED: Parallax effect makes the background stay still while you scroll - looks premium */
+    background-attachment: fixed; 
+    display: flex;
+    align-items: center;
+}
+
+.about-content {
+    max-width: 900px; 
+    margin: 0 auto; 
+    text-align: center;
+    font-size: 1.15rem; 
+    line-height: 1.9; 
+    z-index: 1;
+    
+    /* ADDED: A white semi-transparent box BEHIND the text */
+    background: rgba(255, 255, 255, 0.85);
+    
+    /* ADDED: Blur effect to make text pop (Frosted Glass) */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    /* ADDED: Spacing and Borders for the text box */
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 51, 102, 0.15);
+}
+
+/* Optional: Make the About Heading darker to stand out */
+.about h2 {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem; /* Adjusted spacing inside the box */
+}
+/* =========================================
+   8. MISSION COMPONENT (UPDATED)
+   ========================================= */
+.mission-vision { background: var(--white); }
+.cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 50px; margin-top: 50px;
+}
+.card {
+    background: var(--white); 
+    /* Removed padding top to allow image to fit */
+    padding: 0 0 40px 0;
+    border-radius: 20px; 
+    box-shadow: 0 10px 40px rgba(0,51,102,0.1);
+    transition: all var(--transition-medium);
+    border-bottom: 4px solid var(--secondary-color);
+    overflow: hidden; /* Ensures image stays inside corners */
+}
+.card:hover { transform: translateY(-15px); }
+
+/* New Image Styles for Mission/Vision */
+.card-image {
+    width: 100%;
+    height: 250px; /* Fixed height for consistency */
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.card:hover .card-image img {
+    transform: scale(1.1); /* Zoom effect */
+}
+
+.card h3 {
+    color: var(--primary-color); font-size: 1.8rem; margin-bottom: 25px;
+    text-align: center; font-weight: 700;
+    padding: 0 40px; /* Added side padding for text */
+}
+.card p {
+    padding: 0 40px; /* Added side padding for text */
+}
+
+/* =========================================
+   9. PHILOSOPHY COMPONENT
+   ========================================= */
+.philosophy {
+    background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.9)), url('Our\ Philosophy.jpg');
+    background-size: cover; background-attachment: fixed; color: var(--white);
+}
+.philosophy h2 { color: var(--white); }
+.philosophy-list { list-style: none; max-width: 900px; margin: 0 auto; }
+.philosophy-list li {
+    padding: 25px 20px; padding-left: 60px; position: relative;
+    font-size: 1.15rem; margin-bottom: 30px;
+    background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+    border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+}
+.philosophy-list li:before {
+    content: "⚓"; position: absolute; left: 20px;
+    color: var(--secondary-color); font-size: 1.8rem;
+}
+
+/* =========================================
+   10. TEAM COMPONENT
+   ========================================= */
+.team { background: linear-gradient(135deg, var(--light-bg) 0%, rgba(0,51,102,0.05) 100%); }
+.team-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 50px; margin-top: 50px;
+}
+.team-member {
+    text-align: center; background: var(--white); padding: 40px 30px;
+    border-radius: 20px; box-shadow: 0 10px 40px rgba(0,51,102,0.1);
+    transition: all var(--transition-medium);
+}
+.team-member:hover { transform: translateY(-10px); }
+.team-avatar {
+    width: 150px; height: 150px; background: var(--light-bg);
+    border-radius: 50%; margin: 0 auto 25px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: var(--primary-color);
+    border: 3px solid var(--secondary-color);
+    overflow: hidden;
+}
+.team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.team-member h4 {
+    color: var(--primary-color); font-size: 1.5rem;
+    margin-bottom: 10px; font-weight: 600;
+}
+.team-member p {
+    color: var(--secondary-color); font-weight: 500;
+    text-transform: uppercase; font-size: 0.9rem;
+}
+
+/* =========================================
+   11. SERVICES COMPONENT (UPDATED)
+   ========================================= */
+.services { background: var(--white); }
+.service-columns {
+    /* Adjusted minmax to 250px to fit 4 columns side-by-side */
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px; margin-top: 50px;
+}
+.service-category {
+    background: linear-gradient(135deg, var(--white) 0%, var(--light-bg) 100%);
+    padding: 40px 30px; border-radius: 20px;
+    border: 2px solid var(--light-bg);
+    box-shadow: 0 5px 25px rgba(0,51,102,0.08);
+    height: 100%; /* Make all cards same height */
+}
+.service-category h3 {
+    color: var(--primary-color); font-size: 1.5rem; margin-bottom: 30px;
+    text-align: center; text-transform: uppercase;
+}
+.service-category ul { list-style: none; }
+.service-category li {
+    padding: 12px 0; padding-left: 35px; position: relative;
+    font-size: 1.05rem; border-bottom: 1px solid rgba(0,51,102,0.05);
+}
+.service-category li:before {
+    content: "✓"; position: absolute; left: 10px; color: var(--secondary-color);
+}
+
+/* =========================================
+   12. CONTACT COMPONENT (UPDATED)
+   ========================================= */
+.contact {
+    background: linear-gradient(rgba(0, 51, 102, 0.85), rgba(0, 51, 102, 0.85)), url('Last.jpg');
+    background-size: cover; background-position: center;
+    color: var(--white); padding: 100px 0;
+}
+.contact h2 { color: var(--white); }
+
+.contact-info {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px; margin-top: 50px; text-align: center;
+}
+.contact-item {
+    padding: 40px 20px; 
+    background: rgba(255,255,255,0.1); /* Glass effect */
+    border-radius: 15px; 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.contact-item:hover {
+    transform: translateY(-10px);
+    background: rgba(255,255,255,0.15);
+    border-color: var(--secondary-color);
+    box-shadow: 0 15px 30px rgba(0,168,232,0.3);
+}
+.contact-item h4 {
+    color: var(--secondary-color); margin-bottom: 15px;
+    font-size: 1.4rem; text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 700;
+}
+.contact-item p, .contact-item a { 
+    color: var(--white); text-decoration: none; font-size: 1.1rem;
+}
+.contact-item a:hover { color: var(--secondary-color); text-decoration: underline; }
+
+/* =========================================
+   13. FOOTER COMPONENT
+   ========================================= */
+footer {
+    background: #001a33; color: var(--white);
+    text-align: center; padding: 30px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        position: fixed; left: -100%; top: 70px;
+        flex-direction: column; background: var(--primary-color);
+        width: 100%; text-align: center; padding: 30px 0;
+    }
+    .nav-menu.active { left: 0; }
+    .hero h1 { font-size: 2.5rem; }
+}
